@@ -156,19 +156,52 @@
 </head>
 <body>
 
-  <!-- 🔽 NUOVO BLOCCO: NAVBAR -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-    <div class="container">
-      <a class="navbar-brand" href="#">AIDEA</a>
-      <div class="ms-auto">
-        <button class="btn btn-outline-info me-2" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
-        <button class="btn btn-outline-light me-3" data-bs-toggle="modal" data-bs-target="#registerModal">Register</button>
-        <span class="text-white me-3" id="creditsDisplay">Credits: 2</span>
-        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#buyModal">Buy Credits</button>
-      </div>
-    </div>
-  </nav>
-  <div style="height: 60px;"></div>
+  <!-- NAVBAR PERSONALIZZATA ORIZZONTALE CON SFONDO GRADIENTE -->
+<nav class="custom-navbar fixed-top d-flex align-items-center justify-content-center px-4" style="height: 60px;">
+  <a href="#" class="navbar-brand text-white fw-bold me-auto" style="font-size: 1.5rem; user-select:none;">AIDEA</a>
+  <div class="d-flex align-items-center gap-3">
+    <button class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
+    <button class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#registerModal">Register</button>
+    <span class="text-white fw-semibold" id="creditsDisplay" style="min-width: 90px; text-align: center;">Credits: 2</span>
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#buyModal">Buy Credits</button>
+  </div>
+</nav>
+
+<style>
+  /* Navbar personalizzata con stesso sfondo animato della pagina */
+  .custom-navbar {
+    background: linear-gradient(-45deg, #001f3f, #007bff, #00c6ff, #0052cc);
+    background-size: 400% 400%;
+    animation: gradientBackground 15s ease infinite;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    z-index: 1030; /* sopra tutto */
+  }
+
+  @keyframes gradientBackground {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  /* Bottone di outline info più compatto */
+  .btn-outline-info {
+    padding: 6px 14px;
+    font-size: 0.9rem;
+  }
+  .btn-outline-light {
+    padding: 6px 14px;
+    font-size: 0.9rem;
+  }
+  .btn-primary {
+    padding: 6px 16px;
+    font-size: 0.9rem;
+  }
+
+  /* Disabilito overflow orizzontale */
+  body {
+    overflow-x: hidden;
+  }
+</style>
 
   <!-- 🔽 MODAL LOGIN -->
   <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
@@ -251,23 +284,23 @@
   </section>
 
   <!-- FAQ SECTION -->
-  <section class="faq-section" id="faq">
-    <div class="container">
-      <h2>❓ Frequently Asked Questions</h2>
-      <div class="faq-item">
-        <h5>What is AIDEA?</h5>
-        <div class="faq-answer">AIDEA is a tool that uses AI to provide feedback and scoring on startup ideas based on input descriptions.</div>
-      </div>
-      <div class="faq-item">
-        <h5>Is it free to use?</h5>
-        <div class="faq-answer">Yes, AIDEA is currently free to use with no registration required.</div>
-      </div>
-      <div class="faq-item">
-        <h5>Can I get feedback more than once?</h5>
-        <div class="faq-answer">Absolutely! You can evaluate as many startup ideas as you want.</div>
-      </div>
+<<section class="faq-section" id="faq" style="background: transparent; color: white; padding: 60px 20px;">
+  <div class="container">
+    <h2 style="text-align: center; margin-bottom: 40px; color: #a0d8ff;">❓ Frequently Asked Questions</h2>
+    <div class="faq-item">
+      <h5 style="cursor: pointer; font-weight: 600;">What is AIDEA?</h5>
+      <div class="faq-answer" style="color: #d0e7ff; padding-left: 15px;">AIDEA is a tool that uses AI to provide feedback and scoring on startup ideas based on input descriptions.</div>
     </div>
-  </section>
+    <div class="faq-item">
+      <h5 style="cursor: pointer; font-weight: 600;">Is it free to use?</h5>
+      <div class="faq-answer" style="color: #d0e7ff; padding-left: 15px;">Yes, AIDEA is currently free to use with no registration required.</div>
+    </div>
+    <div class="faq-item">
+      <h5 style="cursor: pointer; font-weight: 600;">Can I get feedback more than once?</h5>
+      <div class="faq-answer" style="color: #d0e7ff; padding-left: 15px;">Absolutely! You can evaluate as many startup ideas as you want.</div>
+    </div>
+  </div>
+</section>
 
   <!-- FOOTER -->
   <footer>

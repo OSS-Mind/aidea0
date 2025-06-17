@@ -157,6 +157,7 @@
 <body>
 
   <!-- NAVBAR PERSONALIZZATA ORIZZONTALE CON SFONDO GRADIENTE -->
+<<<<<<< HEAD
 <nav class="custom-navbar fixed-top d-flex align-items-center justify-content-center px-4" style="height: 60px;">
   <a href="#" class="navbar-brand text-white fw-bold me-auto" style="font-size: 1.5rem; user-select:none;">AIDEA</a>
   <div class="d-flex align-items-center gap-3">
@@ -166,6 +167,47 @@
     <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#buyModal">Buy Credits</button>
   </div>
 </nav>
+=======
+  <nav class="custom-navbar fixed-top d-flex align-items-center justify-content-center px-4" style="height: 60px;">
+    <a href="#" class="navbar-brand text-white fw-bold me-auto" style="font-size: 1.5rem; user-select:none;">AIDEA</a>
+    
+    <div class="d-flex align-items-center gap-3">
+  
+      <div class="position-relative">
+        <div style="position: absolute; top: -10px; right: -10px; background: red; color: white; font-weight: bold; 
+                    border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center;
+                    font-size: 16px; cursor: default; user-select:none; z-index: 10;">
+          ×
+        </div>
+        <button class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
+      </div>
+  
+      <div class="position-relative">
+        <div style="position: absolute; top: -10px; right: -10px; background: red; color: white; font-weight: bold; 
+                    border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center;
+                    font-size: 16px; cursor: default; user-select:none; z-index: 10;">
+          ×
+        </div>
+        <button class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#registerModal">Register</button>
+      </div>
+  
+      <span class="text-white fw-semibold position-relative" style="min-width: 90px; text-align: center;">
+        Credits: 2
+        <!-- Se vuoi, puoi mettere la X qui dentro come sopra -->
+      </span>
+  
+      <div class="position-relative">
+        <div style="position: absolute; top: -10px; right: -10px; background: red; color: white; font-weight: bold; 
+                    border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center;
+                    font-size: 16px; cursor: default; user-select:none; z-index: 10;">
+          ×
+        </div>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#buyModal">Buy Credits</button>
+      </div>
+  
+    </div>
+  </nav>
+>>>>>>> e8c4156 (Aggiunte X rosse sopra i pulsanti Login, Register e Buy Credits nella navbar)
 
 <style>
   /* Navbar personalizzata con stesso sfondo animato della pagina */
@@ -212,9 +254,11 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body">
-          <input type="email" class="form-control mb-3" placeholder="Email">
-          <input type="password" class="form-control mb-3" placeholder="Password">
-          <button class="btn btn-primary w-100">Log In</button>
+          <form action="/login" method="POST">
+            <input type="email" class="form-control mb-3" name="email" placeholder="Email" required>
+            <input type="password" class="form-control mb-3" name="password" placeholder="Password" required>
+            <button type="submit" class="btn btn-primary w-100">Log In</button>
+          </form>
         </div>
       </div>
     </div>
@@ -229,10 +273,12 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body">
-          <input type="text" class="form-control mb-3" placeholder="Name">
-          <input type="email" class="form-control mb-3" placeholder="Email">
-          <input type="password" class="form-control mb-3" placeholder="Password">
-          <button class="btn btn-success w-100">Sign Up</button>
+          <form action="/register" method="POST">
+            <input type="text" class="form-control mb-3" name="name" placeholder="Name" required>
+            <input type="email" class="form-control mb-3" name="email" placeholder="Email" required>
+            <input type="password" class="form-control mb-3" name="password" placeholder="Password" required>
+            <button type="submit" class="btn btn-success w-100">Sign Up</button>
+          </form>
         </div>
       </div>
     </div>

@@ -1,5 +1,5 @@
 
-from auth import auth_bp
+#from auth import auth_bp
 # from credits import credits_bp
 import os
 import logging

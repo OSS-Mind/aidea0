@@ -109,7 +109,6 @@
       margin-top: 10px;
     }
 
-    /* FAQ SECTION */
     .faq-section {
       background: #f9f9f9;
       color: #000;
@@ -136,7 +135,6 @@
       padding-left: 15px;
     }
 
-    /* FOOTER */
     footer {
       background-color: #001f3f;
       color: white;
@@ -157,6 +155,72 @@
   </style>
 </head>
 <body>
+
+  <!-- 🔽 NUOVO BLOCCO: NAVBAR -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="#">AIDEA</a>
+      <div class="ms-auto">
+        <button class="btn btn-outline-info me-2" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
+        <button class="btn btn-outline-light me-3" data-bs-toggle="modal" data-bs-target="#registerModal">Register</button>
+        <span class="text-white me-3" id="creditsDisplay">Credits: 2</span>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#buyModal">Buy Credits</button>
+      </div>
+    </div>
+  </nav>
+  <div style="height: 60px;"></div>
+
+  <!-- 🔽 MODAL LOGIN -->
+  <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content bg-light text-dark">
+        <div class="modal-header">
+          <h5 class="modal-title" id="loginModalLabel">Login</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <input type="email" class="form-control mb-3" placeholder="Email">
+          <input type="password" class="form-control mb-3" placeholder="Password">
+          <button class="btn btn-primary w-100">Log In</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🔽 MODAL REGISTER -->
+  <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content bg-light text-dark">
+        <div class="modal-header">
+          <h5 class="modal-title" id="registerModalLabel">Register</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <input type="text" class="form-control mb-3" placeholder="Name">
+          <input type="email" class="form-control mb-3" placeholder="Email">
+          <input type="password" class="form-control mb-3" placeholder="Password">
+          <button class="btn btn-success w-100">Sign Up</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🔽 MODAL BUY CREDITS -->
+  <div class="modal fade" id="buyModal" tabindex="-1" aria-labelledby="buyModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content bg-light text-dark">
+        <div class="modal-header">
+          <h5 class="modal-title" id="buyModalLabel">Buy Credit Packages</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body text-center">
+          <button class="btn btn-outline-primary w-100 mb-3">🎯 5 Evaluations - €2</button>
+          <button class="btn btn-outline-success w-100 mb-3">🚀 10 Evaluations - €3</button>
+          <button class="btn btn-outline-dark w-100">💼 Unlimited - Coming Soon</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- HERO SECTION -->
   <section class="hero-section">
@@ -265,18 +329,10 @@
       });
     });
 
-    // FAQ toggle
     $('.faq-item h5').on('click', function () {
       $(this).next('.faq-answer').slideToggle(300);
     });
   </script>
 </body>
 </html>
-
-cd aidea
-git init
-git add .
-git commit -m "Inizializzazione progetto AIDEA"
-git branch -M main
-git remote add origin https://github.com/MatteoCelin/aidea0.git
-git push -u origin main
+</details>

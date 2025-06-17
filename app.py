@@ -1,3 +1,6 @@
+
+from auth import auth_bp
+# from credits import credits_bp
 import os
 import logging
 from flask import Flask, render_template, request, jsonify
@@ -9,6 +12,8 @@ logging.basicConfig(level=logging.DEBUG)
 
 # Flask app init
 app = Flask(__name__)
+app.register_blueprint(auth_bp, url_prefix='/auth')
+#app.register_blueprint(credits_bp, url_prefix='/credits')  # se usi anche questo
 
 # API Key load (env or fallback)
 COHERE_API_KEY = os.getenv("COHERE_API_KEY", "py3vt04R5KgSaaAj1rD39qMkbmL2uAb2tUPuPwbg")
@@ -108,6 +113,21 @@ Write clearly and professionally. Avoid asterisks, hashtags, bold characters and
     except Exception as e:
         logging.error(f"Error: {e}")
         return jsonify({"error": "Error communicating with Cohere API"}), 502
+
+from flask import redirect, url_for
+
+@app.route('/register', methods=['POST'])
+def register():
+    name = request.form.get('name')
+    email = request.form.get('email')
+    password = request.form.get('password')
+
+    app.logger.debug(f"Register attempt with Name: {name}, Email: {email}")
+
+    # Qui potresti aggiungere la logica per salvare l'utente nel DB
+    # Per ora simuliamo solo successo
+
+    return redirect(url_for('index'))
 
 import os
 

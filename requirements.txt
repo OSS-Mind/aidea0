@@ -3,3 +3,4 @@ gunicorn
 python-dotenv
 cohere
 Flask-SQLAlchemy
+Flask-Login  # <--- AGGIUNGI QUESTA RIGA

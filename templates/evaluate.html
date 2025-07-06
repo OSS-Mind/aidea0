@@ -3,190 +3,235 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Evaluate Your Idea - AIDEA</title>
+    <title>Evaluation Result - AIDEA</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='stle.css') }}">
     <style>
-        /* Basic styling for layout and navigation */
+        :root {
+            --primary-color: #007BFF;
+            --primary-hover: #0056b3;
+            --dark-color: #212529;
+            --secondary-color: #6c757d;
+            --light-color: #f8f9fa;
+            --white-color: #ffffff;
+            --border-color: #dee2e6;
+            --font-family: 'Helvetica Neue', Arial, sans-serif;
+            --border-radius: 12px;
+            --shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+        }
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: var(--font-family);
             margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-            color: #333;
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            line-height: 1.7;
         }
-        nav {
-            background-color: #333;
-            color: white;
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        nav .logo {
-            font-size: 24px;
-            font-weight: bold;
-            color: white;
-            text-decoration: none;
-        }
-        nav ul {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            align-items: center;
-        }
-        nav ul li {
-            margin-left: 20px;
-        }
-        nav ul li a {
-            color: white;
-            text-decoration: none;
-            font-size: 16px;
-            padding: 5px 10px;
-            border-radius: 4px;
-        }
-        nav ul li a:hover {
-            background-color: #555;
-        }
-        nav .welcome-message {
-            color: white;
-            margin-right: 20px;
-        }
-        .container {
+
+        /* Reusable Navbar Styles */
+        nav { background-color: var(--white-color); box-shadow: 0 2px 5px rgba(0,0,0,0.05); padding: 1rem 20px; }
+        nav .container { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+        nav .logo { font-size: 28px; font-weight: bold; color: var(--primary-color); text-decoration: none; }
+        nav ul { list-style: none; margin: 0; padding: 0; display: flex; align-items: center; }
+        nav ul li { margin-left: 25px; }
+        nav ul li a { color: var(--dark-color); text-decoration: none; font-weight: 500; }
+        nav .welcome-message { color: var(--secondary-color); margin-right: 15px; }
+
+
+        .main-container {
             max-width: 900px;
-            margin: 40px auto;
-            padding: 30px;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin: 50px auto;
+            padding: 40px;
         }
+        
+        /* Form Styling */
+        .form-section {
+            background-color: var(--white-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 40px;
+        }
+
         h1 {
             text-align: center;
-            color: #007bff;
-            margin-bottom: 30px;
+            color: var(--dark-color);
+            margin-bottom: 10px;
+            font-size: 36px;
         }
+
+        .subtitle {
+            text-align: center;
+            color: var(--secondary-color);
+            margin-bottom: 40px;
+            font-size: 18px;
+        }
+
         textarea {
             width: 100%;
-            padding: 15px;
-            margin-bottom: 20px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 16px;
-            min-height: 200px;
-            box-sizing: border-box;
-        }
-        button {
-            background-color: #28a745;
-            color: white;
-            padding: 12px 25px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 18px;
-            width: 100%;
-            transition: background-color 0.3s ease;
-        }
-        button:hover {
-            background-color: #218838;
-        }
-        .loading-spinner {
-            display: none; /* Hidden by default */
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #3498db;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            animation: spin 1s linear infinite;
-            margin: 20px auto;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        #result-area {
-            margin-top: 30px;
             padding: 20px;
-            background-color: #f9f9f9;
-            border: 1px solid #eee;
-            border-radius: 5px;
-            white-space: pre-wrap; /* Preserves whitespace and line breaks */
-            word-wrap: break-word; /* Breaks long words */
+            margin-bottom: 25px;
+            border: 2px solid var(--border-color);
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            min-height: 180px;
+            box-sizing: border-box;
+            transition: border-color 0.3s, box-shadow 0.3s;
         }
-        #result-area pre {
-            margin: 0;
-            font-family: inherit; /* Use body font */
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 10px rgba(0, 123, 255, 0.15);
         }
-        .flash-messages {
-            list-style: none;
-            padding: 0;
-            margin: 20px 0;
-            text-align: center;
+
+        .evaluate-button {
+            background: linear-gradient(45deg, var(--primary-color), var(--primary-hover));
+            color: white;
+            padding: 18px 25px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 20px;
+            font-weight: bold;
+            width: 100%;
+            transition: all 0.3s ease;
         }
-        .flash-messages li {
-            padding: 10px;
+
+        .evaluate-button:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+        }
+        
+        .evaluate-button:disabled {
+            background: #ccc; cursor: not-allowed; transform: none; box-shadow: none;
+        }
+
+        /* Loading Spinner */
+        .loading-spinner {
+            display: none; margin: 30px auto; width: 40px; height: 40px;
+            border: 4px solid #f3f3f3; border-top-color: var(--primary-color);
+            border-radius: 50%; animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* --- STYLES FOR THE FORMATTED REPORT --- */
+        #result-area {
+            margin-top: 40px;
+            background-color: var(--white-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 40px;
+            display: none; /* Hidden until there is a result */
+        }
+
+        /* Heading Styles */
+        .report-h1 {
+            font-size: 28px;
+            color: var(--dark-color);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
+            margin-top: 30px;
+            margin-bottom: 20px;
+        }
+        .report-h1:first-child {
+            margin-top: 0;
+        }
+
+        .report-h2 {
+            font-size: 22px;
+            color: var(--dark-color);
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        .report-h3 {
+            font-size: 18px;
+            color: var(--secondary-color);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 20px;
             margin-bottom: 10px;
-            border-radius: 4px;
+        }
+
+        /* Paragraph and List Styles */
+        .report-p, .report-li {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        
+        .report-ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .report-li::before {
+            content: '•';
+            color: var(--primary-color);
+            font-weight: bold;
             display: inline-block;
+            width: 1em;
+            margin-left: -1em;
         }
-        .flash-messages .success {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
+
+        /* Table Styles */
+        .report-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            margin-bottom: 20px;
         }
-        .flash-messages .danger {
+        
+        .report-table th, .report-table td {
+            border: 1px solid var(--border-color);
+            padding: 12px;
+            text-align: left;
+        }
+        
+        .report-table th {
+            background-color: var(--light-color);
+            font-weight: 600;
+        }
+        
+        /* Error Message Style */
+        .error-card {
             background-color: #f8d7da;
             color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-        .flash-messages .info {
-            background-color: #d1ecf1;
-            color: #0c5460;
-            border: 1px solid #bee5eb;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            border-left: 5px solid #f5c6cb;
         }
     </style>
 </head>
 <body>
     <nav>
-        <a href="{{ url_for('index') }}" class="logo">AIDEA</a>
-        <ul>
-            <li><a href="{{ url_for('index') }}">Home</a></li>
-            {% if current_user.is_authenticated %}
-                <li class="welcome-message">Hello, {{ current_user.username }}!</li>
-                <li><a href="{{ url_for('evaluate_page') }}">Evaluate Idea</a></li>
-                <li><a href="{{ url_for('logout') }}">Logout</a></li>
-            {% else %}
-                <li><a href="{{ url_for('signup') }}">Sign Up</a></li>
-                <li><a href="{{ url_for('login') }}">Login</a></li>
-            {% endif %}
-        </ul>
+        <div class="container">
+            <a href="{{ url_for('index') }}" class="logo">AIDEA</a>
+            <ul>
+                {% if current_user.is_authenticated %}
+                    <li class="welcome-message">Hello, {{ current_user.username }}!</li>
+                    <li><a href="{{ url_for('evaluate_page') }}">Evaluate Idea</a></li>
+                    <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('signup') }}">Sign Up</a></li>
+                    <li><a href="{{ url_for('login') }}">Login</a></li>
+                {% endif %}
+            </ul>
+        </div>
     </nav>
 
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            <ul class="flash-messages">
-            {% for category, message in messages %}
-                <li class="{{ category }}">{{ message }}</li>
-            {% endfor %}
-            </ul>
-        {% endif %}
-    {% endwith %}
+    <div class="main-container">
+        <div class="form-section">
+            <h1>Evaluate Your Startup Idea</h1>
+            <p class="subtitle">Describe your idea below. Our AI will provide a detailed analysis and actionable advice.</p>
+            
+            <textarea id="ideaInput" placeholder="Example: 'An app that uses augmented reality to help people furnish their homes, letting them see 3D models of furniture in their own space before buying...'"></textarea>
+            <button class="evaluate-button" onclick="evaluateIdea()">Analyze My Idea</button>
 
-    <div class="container">
-        <h1>Evaluate Your Startup Idea</h1>
-        {% if username %}
-            <p>Welcome, {{ username }}! Enter your startup idea below to get a detailed evaluation.</p>
-        {% else %}
-            <p>Please log in to evaluate your startup idea.</p>
-        {% endif %}
-
-        <textarea id="ideaInput" placeholder="Describe your startup idea in detail..."></textarea>
-        <button onclick="evaluateIdea()">Evaluate Idea</button>
-
-        <div class="loading-spinner" id="loadingSpinner"></div>
-
-        <div id="result-area">
-            <p>Your evaluation results will appear here.</p>
+            <div class="loading-spinner" id="loadingSpinner"></div>
         </div>
+        
+        <div id="result-area">
+            </div>
     </div>
 
     <script>
@@ -194,42 +239,110 @@
             const ideaInput = document.getElementById("ideaInput").value;
             const resultArea = document.getElementById("result-area");
             const loadingSpinner = document.getElementById("loadingSpinner");
-            const evaluateButton = document.querySelector('button');
+            const evaluateButton = document.querySelector('.evaluate-button');
 
             if (!ideaInput.trim()) {
-                resultArea.innerHTML = "<p style='color: red;'>Please enter your startup idea.</p>";
+                resultArea.style.display = 'block';
+                resultArea.innerHTML = `<div class="error-card"><h3>Error</h3><p>Please enter your startup idea to be evaluated.</p></div>`;
                 return;
             }
 
-            // Show loading spinner and disable button
             loadingSpinner.style.display = "block";
             evaluateButton.disabled = true;
-            resultArea.innerHTML = "<p>Evaluating your idea...</p>";
+            resultArea.innerHTML = "";
+            resultArea.style.display = 'none';
 
             try {
                 const response = await fetch('/evaluate', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ input_text: ideaInput })
                 });
 
                 const data = await response.json();
-
+                
+                resultArea.style.display = 'block'; // Show the result area
                 if (response.ok) {
-                    resultArea.innerHTML = `<pre>${data.result}</pre>`;
+                    // ** NEW PARSING LOGIC **
+                    // This function takes the raw text and converts it to formatted HTML
+                    const formattedHtml = parseReport(data.result);
+                    resultArea.innerHTML = formattedHtml;
                 } else {
-                    resultArea.innerHTML = `<p style='color: red;'>Error: ${data.error || 'Something went wrong.'}</p>`;
+                    resultArea.innerHTML = `<div class="error-card"><h3>Error</h3><p>${data.error || 'An unknown error occurred.'}</p></div>`;
                 }
             } catch (error) {
-                console.error('Error:', error);
-                resultArea.innerHTML = `<p style='color: red;'>An error occurred. Please try again later.</p>`;
+                console.error('Fetch Error:', error);
+                resultArea.style.display = 'block';
+                resultArea.innerHTML = `<div class="error-card"><h3>Connection Error</h3><p>Could not connect to the server. Please try again later.</p></div>`;
             } finally {
-                // Hide loading spinner and enable button
                 loadingSpinner.style.display = "none";
                 evaluateButton.disabled = false;
             }
+        }
+        
+        /**
+         * Parses the raw text report from the AI into structured HTML.
+         * @param {string} text - The raw text response.
+         * @returns {string} - The formatted HTML string.
+         */
+        function parseReport(text) {
+            const lines = text.split('\n');
+            let html = '';
+            let inTable = false;
+
+            for (const line of lines) {
+                const trimmedLine = line.trim();
+                
+                if (trimmedLine.startsWith('|')) {
+                    if (!inTable) {
+                        html += '<table class="report-table">';
+                        inTable = true;
+                    }
+                    // Check for header separator line
+                    if (trimmedLine.includes('---')) {
+                         html += '<thead><tr>';
+                         const headers = lines[lines.indexOf(line) - 1].split('|').filter(h => h.trim());
+                         headers.forEach(header => html += `<th>${header.trim()}</th>`);
+                         html += '</tr></thead><tbody>';
+                    } else {
+                        // Regular table row
+                         const cells = trimmedLine.split('|').filter(c => c.trim());
+                         if (cells.length > 0 && !lines[lines.indexOf(line)-1].includes('---')) { // Avoid rendering header row twice
+                            html += '<tr>';
+                            cells.forEach(cell => html += `<td>${cell.trim()}</td>`);
+                            html += '</tr>';
+                        }
+                    }
+                } else {
+                    if (inTable) {
+                        html += '</tbody></table>';
+                        inTable = false;
+                    }
+                    
+                    if (trimmedLine.startsWith('###')) {
+                        html += `<h3 class="report-h3">${trimmedLine.substring(4).trim()}</h3>`;
+                    } else if (trimmedLine.startsWith('##')) {
+                        html += `<h2 class="report-h2">${trimmedLine.substring(3).trim()}</h2>`;
+                    } else if (trimmedLine.startsWith('#')) {
+                        html += `<h1 class="report-h1">${trimmedLine.substring(2).trim()}</h1>`;
+                    } else if (trimmedLine.startsWith('- ')) {
+                        html += `<li class="report-li">${trimmedLine.substring(2).trim()}</li>`;
+                    } else if (trimmedLine) {
+                        html += `<p class="report-p">${trimmedLine}</p>`;
+                    }
+                }
+            }
+
+            if (inTable) { // Close table if it's the last element
+                html += '</tbody></table>';
+            }
+            
+            // Wrap list items in a <ul> tag
+            html = html.replace(/<li class="report-li">/g, '<ul><li class="report-li">').replace(/<\/p><ul/g, '</p><ul').replace(/<\/h3><ul/g, '</h3><ul');
+            html = html.replace(/(<\/li>)(?=<li)/g, '</li>').replace(/(<\/li>)(?!<li)/g, '</li></ul>');
+
+
+            return html;
         }
     </script>
 </body>

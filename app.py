@@ -225,13 +225,9 @@ Write clearly and professionally. Avoid asterisks, hashtags, bold characters and
         return jsonify({"error": "Error communicating with Cohere API"}), 502
 
 # This part ensures the database tables are created before the first request.
-<<<<<<< HEAD
-@app.before_first_request
-def create_tables():
+with app.app_context():
     db.create_all()
-=======
 # ... (all your other code, including imports, app config, User model, routes) ...
->>>>>>> d9ba6741dfe12748cd99c0d1f75d856cd82b08b4
 
 if __name__ == "__main__":
     # Ensure database tables are created when the application starts

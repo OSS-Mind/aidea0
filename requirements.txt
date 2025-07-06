@@ -2,3 +2,4 @@ flask
 gunicorn
 python-dotenv
 cohere
+Flask-SQLAlchemy

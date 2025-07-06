@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buy Credits - AIDEA</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='stle.css') }}">
+    <style>
+        /* Re-using some styles from other pages for consistency */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        nav {
+            background-color: #333;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        nav .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+        }
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+        }
+        nav ul li {
+            margin-left: 20px;
+        }
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+        nav ul li a:hover {
+            background-color: #555;
+        }
+        nav .welcome-message {
+            color: white;
+            margin-right: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h1 {
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 18px;
+            margin-bottom: 25px;
+        }
+        .price-options {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+        .price-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 25px;
+            width: 250px;
+            background-color: #f9f9f9;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .price-card h2 {
+            color: #333;
+            font-size: 24px;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+        .price-card .price {
+            font-size: 36px;
+            font-weight: bold;
+            color: #28a745;
+            margin-bottom: 10px;
+        }
+        .price-card ul {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .price-card ul li {
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+        .price-card button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+        .price-card button:hover {
+            background-color: #0056b3;
+        }
+        .flash-messages {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .flash-messages li {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+        .flash-messages .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .flash-messages .danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .flash-messages .info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="{{ url_for('index') }}" class="logo">AIDEA</a>
+        <ul>
+            <li><a href="{{ url_for('index') }}">Home</a></li>
+            {% if current_user.is_authenticated %}
+                <li class="welcome-message">Hello, {{ username }}!</li>
+                <li><a href="{{ url_for('evaluate_page') }}">Evaluate Idea</a></li>
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+            {% else %}
+                <li><a href="{{ url_for('signup') }}">Sign Up</a></li>
+                <li><a href="{{ url_for('login') }}">Login</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul class="flash-messages">
+            {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <div class="container">
+        <h1>Buy More Evaluations</h1>
+        <p>You have **{{ free_evals }}** free evaluations left.</p>
+        <p>Unlock unlimited potential for your startup ideas!</p>
+
+        <div class="price-options">
+            <div class="price-card">
+                <h2>Basic Pack</h2>
+                <div class="price">$9.99</div>
+                <ul>
+                    <li>5 Evaluations</li>
+                    <li>Detailed Reports</li>
+                    <li>Standard Support</li>
+                </ul>
+                <button>Purchase Basic</button>
+            </div>
+            <div class="price-card">
+                <h2>Pro Pack</h2>
+                <div class="price">$19.99</div>
+                <ul>
+                    <li>20 Evaluations</li>
+                    <li>Detailed Reports</li>
+                    <li>Priority Support</li>
+                    <li>Access to Premium Prompts (Coming Soon)</li>
+                </ul>
+                <button>Purchase Pro</button>
+            </div>
+            <div class="price-card">
+                <h2>Unlimited</h2>
+                <div class="price">$49.99/month</div>
+                <ul>
+                    <li>Unlimited Evaluations</li>
+                    <li>All Premium Features</li>
+                    <li>Dedicated Support</li>
+                    <li>Early Access to New Tools</li>
+                </ul>
+                <button>Subscribe Now</button>
+            </div>
+        </div>
+
+        <p style="margin-top: 40px; font-size: 14px; color: #666;">
+            *Note: Payment integration is not yet active. This is a placeholder for future development.
+        </p>
+    </div>
+</body>
+</html>

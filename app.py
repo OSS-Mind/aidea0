@@ -13,10 +13,10 @@ logging.basicConfig(level=logging.DEBUG)
 # Flask app init
 app = Flask(__name__)
 
-# Load environment variables
+# --- Configuration ---
+# Load environment variables FIRST to ensure they are available for app.config
 load_dotenv()
 
-# --- Configuration ---
 # IMPORTANT: Replace 'your_super_secret_key' with a strong, random key in production!
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'your_super_secret_key')
 # Database configuration for SQLite
@@ -27,6 +27,9 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False # To suppress a warning
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login' # The route name for the login page
+
+# THIS LINE MUST REMAIN COMMENTED OUT OR BE REMOSVED unless you are implementing a separate blueprint
+# app.register_blueprint(auth_bp, url_prefix='/auth')
 
 # API Key load (env or fallback)
 COHERE_API_KEY = os.getenv("COHERE_API_KEY", "YOUR_DEFAULT_COHERE_API_KEY_HERE") # Replace with your actual key or ensure it's in .env
@@ -40,6 +43,8 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(20), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(128), nullable=False)
+    # NUOVO CAMPO per la monetizzazione
+    free_evaluations_left = db.Column(db.Integer, default=1, nullable=False) # Inizializza con 1 valutazione gratuita
 
     def __repr__(self):
         return f"User('{self.username}', '{self.email}')"
@@ -70,7 +75,7 @@ def signup():
         email = request.form.get('email')
         password = request.form.get('password')
 
-        app.logger.debug(f"Signup attempt with Username: {username}, Email: {email}")
+        app.logger.debug(f"Signup attempt with Name: {username}, Email: {email}")
 
         # Basic validation
         if not username or not email or not password:
@@ -85,13 +90,13 @@ def signup():
             flash('Email already registered. Please use a different one or login.', 'warning')
             return render_template('signup.html')
 
-        new_user = User(username=username, email=email)
+        new_user = User(username=username, email=email, free_evaluations_left=1) # Assegna 1 valutazione gratuita
         new_user.set_password(password)
 
         try:
             db.session.add(new_user)
             db.session.commit()
-            flash('Your account has been created! You can now log in.', 'success')
+            flash('Your account has been created! You can now log in and get 1 free evaluation.', 'success')
             return redirect(url_for('login'))
         except Exception as e:
             db.session.rollback()
@@ -133,16 +138,19 @@ def logout():
 @app.route('/evaluate_page') # A new route for the evaluation page that requires login
 @login_required
 def evaluate_page():
-    # You might want to pass user-specific data to this template
-    return render_template('evaluate.html', username=current_user.username)
+    return render_template('evaluate.html', username=current_user.username, free_evals=current_user.free_evaluations_left)
 
 @app.route('/evaluate', methods=["POST"])
 @login_required # Ensure only logged-in users can evaluate
 def evaluate_idea(): # Renamed the function to avoid conflict with route name
     try:
+        # Logica di Monetizzazione: Controllo delle valutazioni gratuite
+        if current_user.free_evaluations_left <= 0:
+            return jsonify({"error": "No free evaluations left. Please purchase credits to continue."}), 403 # Forbidden
+
         data = request.get_json()
         user_input = data.get("input_text", "").strip()
-        logging.debug(f"User '{current_user.username}' input: {user_input}") # Log current user
+        logging.debug(f"User '{current_user.username}' input: {user_input}")
 
         if not user_input:
             return jsonify({"error": "Text not provided!"}), 400
@@ -218,17 +226,26 @@ Write clearly and professionally. Avoid asterisks, hashtags, bold characters and
         result_text = response.generations[0].text.strip()
         logging.debug(f"Cohere response: {result_text}")
 
+        # Decrementa la valutazione gratuita dopo l'utilizzo
+        current_user.free_evaluations_left -= 1
+        db.session.commit()
+        flash(f"Evaluation used. You have {current_user.free_evaluations_left} free evaluations left.", 'info')
+
         return jsonify({"result": result_text})
 
     except Exception as e:
         logging.error(f"Error: {e}")
         return jsonify({"error": "Error communicating with Cohere API"}), 502
 
-# This part ensures the database tables are created before the first request.
-# ... (all your other code, including imports, app config, User model, routes) ...
+# NUOVO ROUTE: Per gestire la visualizzazione e l'acquisto di crediti
+@app.route('/credits')
+@login_required
+def credits():
+    return render_template('credits.html', username=current_user.username, free_evals=current_user.free_evaluations_left)
 
+
+# This part ensures the database tables are created when the application starts
 if __name__ == "__main__":
-    # Ensure database tables are created when the application starts
     with app.app_context(): # <--- Use app_context to perform db operations
         db.create_all()
 

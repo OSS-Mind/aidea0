@@ -158,7 +158,6 @@
             {% if current_user.is_authenticated %}
                 <li class="welcome-message">Hello, {{ current_user.username }}!</li>
                 <li><a href="{{ url_for('evaluate_page') }}">Evaluate Idea</a></li>
-                <li><a href="{{ url_for('credits') }}">My Credits ({{ current_user.free_evaluations_left }})</a></li> {# Added link to credits #}
                 <li><a href="{{ url_for('logout') }}">Logout</a></li>
             {% else %}
                 <li><a href="{{ url_for('signup') }}">Sign Up</a></li>

@@ -109,12 +109,14 @@
             background-color: #f9f9f9;
             border: 1px solid #eee;
             border-radius: 5px;
-            white-space: pre-wrap; /* Preserves whitespace and line breaks */
-            word-wrap: break-word; /* Breaks long words */
+            /* Le proprietà di white-space e word-wrap sono state spostate nel selettore 'pre' */
         }
         #result-area pre {
             margin: 0;
-            font-family: inherit; /* Use body font */
+            font-family: inherit; /* Usa il font del corpo principale */
+            white-space: pre-wrap; /* Mantiene spazi e a capo, ma manda a capo il testo */
+            word-wrap: break-word; /* Forza il mandare a capo anche parole lunghe (per browser più vecchi) */
+            overflow-wrap: break-word; /* Un'alternativa più moderna a word-wrap */
         }
         .flash-messages {
             list-style: none;
